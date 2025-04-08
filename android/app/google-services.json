@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "651403015634",
+    "project_id": "jioyathri-47978",
+    "storage_bucket": "jioyathri-47978.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651403015634:android:e90c11cea4cceaa824040b",
+        "android_client_info": {
+          "package_name": "com.example.jioyathri"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxALfmKJKUjHyxra1yrzZ4h41cpj0n-us"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651403015634:android:cbf410e3d179f71724040b",
+        "android_client_info": {
+          "package_name": "com.matspl.jioYatri"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxALfmKJKUjHyxra1yrzZ4h41cpj0n-us"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
