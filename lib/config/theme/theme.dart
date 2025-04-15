@@ -15,6 +15,11 @@ class AppTheme {
       bodyLarge: TextStyle(color: AppColors.black),
       bodyMedium: TextStyle(color: AppColors.black),
     ),
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: Colors.blue,
+      selectionColor: Colors.blue.withAlpha(24),
+      selectionHandleColor: Colors.blue.withAlpha(128),
+    ),
     colorScheme: ColorScheme.light(
       primary: AppColors.white,
       secondary: AppColors.lightGrey,
@@ -41,6 +46,11 @@ class AppTheme {
     textTheme: const TextTheme(
       bodyLarge: TextStyle(color: AppColors.white),
       bodyMedium: TextStyle(color: AppColors.white),
+    ),
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: Colors.blue,
+      selectionColor: Colors.blue.withAlpha(24),
+      selectionHandleColor: Colors.blue.withAlpha(128),
     ),
     colorScheme: ColorScheme.dark(
       primary: AppColors.black,

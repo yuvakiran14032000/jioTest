@@ -12,7 +12,11 @@ class Bubble extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(
-          colors: [Color(0xff6c63ff), Color(0xff49d67a)],
+          // colors: [Color(0xff6c63ff), Color(0xff49d67a)],
+          colors: [
+            Colors.blue.withAlpha(200),
+            Color(0xff49d67a).withAlpha(150),
+          ],
         ),
       ),
     );

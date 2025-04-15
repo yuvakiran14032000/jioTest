@@ -60,7 +60,7 @@ class AuthDatasource {
 
       final uuid = Uuid().v4();
 
-      final usermodal = UserModel(
+      final usermodel = UserModel(
         id: uuid,
         fullname: params.fullname,
         phone: params.phone,
@@ -70,10 +70,10 @@ class AuthDatasource {
         usertype: userType,
       );
 
-      await _fireStore.collection('users').doc(uuid).set(usermodal.toJson());
-      await authLocalStorage.saveUsertoLocalStorage(usermodal);
+      await _fireStore.collection('users').doc(uuid).set(usermodel.toJson());
+      await authLocalStorage.saveUsertoLocalStorage(usermodel);
 
-      return Right(usermodal.toEntity());
+      return Right(usermodel.toEntity());
     } catch (e) {
       log(e.toString());
       return Left(ServerFailure(errorMessage: e.toString()));
@@ -119,6 +119,7 @@ class AuthDatasource {
         profile: userData['profile'],
         usertype: userData['user_type'],
       );
+      await authLocalStorage.saveUsertoLocalStorage(userModel);
 
       return Right(userModel.toEntity());
     } catch (e) {

@@ -1,13 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:jioyathri/config/routes/approutes.dart';
 import 'package:jioyathri/features/authentication/presentation/provider/auth_provider.dart';
 import 'package:jioyathri/features/authentication/presentation/provider/services_provider.dart';
+import 'package:jioyathri/service_locator.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 class CustomerProfileSetup extends StatefulWidget {
   @override
@@ -36,29 +35,26 @@ class _CustomerProfileSetupState extends State<CustomerProfileSetup> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      await _firestore.collection('customers').doc().set({
-        'uid': Uuid().v4(),
-        'name': _name,
-        'email': _email,
-        'phone': _phone,
-        'addresses': [
-          {
-            'type': 'home',
-            'addressLine1': _addressLine1Controller.text,
-            'addressLine2': _addressLine2Controller.text,
-            'city': _cityController.text,
-            'state': _stateController.text,
-            'zipCode': _zipCodeController.text,
-            'isDefault': true,
-          },
-        ],
-        'profileImage': _profileImageUrl ?? '',
-        'preferredCategories': _preferredCategories,
-        'createdAt': FieldValue.serverTimestamp(),
-        'updatedAt': FieldValue.serverTimestamp(),
-      }, SetOptions(merge: true));
-
-      Navigator.pushReplacementNamed(context, '/home');
+      await _firestore
+          .collection('users')
+          .doc(getIt<AuthProvider>().user!.id)
+          .set({
+            'name': _name,
+            'email': _email,
+            'phone': _phone,
+            'addresses': {
+              'addressLine1': _addressLine1Controller.text,
+              'addressLine2': _addressLine2Controller.text,
+              'city': _cityController.text,
+              'state': _stateController.text,
+              'pincode': _zipCodeController.text,
+            },
+            'isVerified': true,
+            'profilePic': '',
+            'createdAt': FieldValue.serverTimestamp(),
+            'updatedAt': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+      Navigator.pushReplacementNamed(context, AppRouter.servicesRoute);
     }
   }
 
@@ -248,7 +244,9 @@ class _CustomerProfileSetupState extends State<CustomerProfileSetup> {
                       ),
                       suffixIcon: Icon(
                         Icons.calendar_today,
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        color: theme.colorScheme.onSurface.withAlpha(
+                          (255 * 0.6).toInt(),
+                        ),
                       ),
                     ),
                     controller: TextEditingController(
@@ -329,48 +327,7 @@ class _CustomerProfileSetupState extends State<CustomerProfileSetup> {
                 keyboardType: TextInputType.number,
                 validator: (value) => value!.isEmpty ? 'Required' : null,
               ),
-
-              // Address fields with similar styling
-              // ... (repeat the TextFormField pattern for all address fields)
-              SizedBox(height: 24),
-              Text(
-                'Preferred Services',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: theme.colorScheme.tertiary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                children:
-                    serviceprovider.services.map((service) {
-                      return FilterChip(
-                        label: Text(
-                          service.name,
-                          style: TextStyle(
-                            color:
-                                _preferredCategories.contains(service.id)
-                                    ? theme.colorScheme.onPrimary
-                                    : theme.colorScheme.onSurface,
-                          ),
-                        ),
-                        selected: _preferredCategories.contains(service.id),
-                        onSelected: (selected) {
-                          setState(() {
-                            if (selected) {
-                              _preferredCategories.add(service.id);
-                            } else {
-                              _preferredCategories.remove(service.id);
-                            }
-                          });
-                        },
-                        selectedColor: theme.colorScheme.tertiary,
-                        backgroundColor: theme.colorScheme.surface,
-                        checkmarkColor: theme.colorScheme.onPrimary,
-                      );
-                    }).toList(),
-              ),
+              // SizedBox(height: 24),
               SizedBox(height: 32),
               SizedBox(
                 width: double.infinity,

@@ -12,6 +12,11 @@ import 'package:jioyathri/features/authentication/domain/usecases/auth_usecases.
 import 'package:jioyathri/features/authentication/domain/usecases/service_usecases.dart';
 import 'package:jioyathri/features/authentication/presentation/provider/auth_provider.dart';
 import 'package:jioyathri/features/authentication/presentation/provider/services_provider.dart';
+import 'package:jioyathri/features/onboarding/data/datasources/onboarding_localstorage.dart';
+import 'package:jioyathri/features/onboarding/data/repositories/onboarding_repository_impl.dart';
+import 'package:jioyathri/features/onboarding/domain/repositories/onboarding_repositories.dart';
+import 'package:jioyathri/features/onboarding/domain/usecases/onboarding_usecase.dart';
+import 'package:jioyathri/features/onboarding/presentation/provider/onboarding_provider.dart';
 
 final getIt = GetIt.instance;
 
@@ -24,6 +29,9 @@ Future<void> setuplocator() async {
   getIt.registerLazySingleton<AuthDatasource>(() => AuthDatasource());
   getIt.registerLazySingleton<AuthLocalstorage>(() => AuthLocalstorage());
   getIt.registerLazySingleton<ServiceDatasource>(() => ServiceDatasource());
+  getIt.registerLazySingleton<OnboardingLocalstorage>(
+    () => OnboardingLocalstorage(),
+  );
 
   //repository
   getIt.registerLazySingleton<AuthRepository>(
@@ -32,6 +40,9 @@ Future<void> setuplocator() async {
   );
   getIt.registerLazySingleton<ServiceRepositiry>(
     () => ServiceRepositoryImpl(getIt<ServiceDatasource>()),
+  );
+  getIt.registerLazySingleton<OnboardingRepositories>(
+    () => OnboardingRepositoryImpl(getIt<OnboardingLocalstorage>()),
   );
 
   //usecases
@@ -47,6 +58,12 @@ Future<void> setuplocator() async {
   getIt.registerLazySingleton<GetServicesUsecase>(
     () => GetServicesUsecase(getIt<ServiceRepositiry>()),
   );
+  getIt.registerLazySingleton<GetOnboardingStatusUsecase>(
+    () => GetOnboardingStatusUsecase(getIt<OnboardingRepositories>()),
+  );
+  getIt.registerLazySingleton<SetOnboardingStatusUsecase>(
+    () => SetOnboardingStatusUsecase(getIt<OnboardingRepositories>()),
+  );
 
   //provider
   getIt.registerLazySingleton<AuthProvider>(
@@ -59,5 +76,12 @@ Future<void> setuplocator() async {
 
   getIt.registerLazySingleton<ServicesProvider>(
     () => ServicesProvider(getIt<GetServicesUsecase>()),
+  );
+
+  getIt.registerLazySingleton(
+    () => OnboardingProvider(
+      getIt<GetOnboardingStatusUsecase>(),
+      getIt<SetOnboardingStatusUsecase>(),
+    ),
   );
 }

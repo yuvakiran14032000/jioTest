@@ -217,7 +217,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                                       Navigator.pushNamedAndRemoveUntil(
                                         context,
-                                        AppRouter.servicesRoute,
+                                        AppRouter.profilesetupRoute,
                                         (_) => false,
                                       );
                                     },
